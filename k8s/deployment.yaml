@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: litellm-pgvector
+  namespace: {{ YOUR_NAMESPACE }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: litellm-pgvector
+  template:
+    metadata:
+      labels:
+        app: litellm-pgvector
+    spec:
+      containers:
+        - name: api
+          image: {{ YOUR_IMAGE }}
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef:
+                name: litellm-pgvector-env
+          # do NOT run prisma generate at runtime
+          env:
+            - name: RUN_DB_PUSH
+              value: "false"
+          ports:
+            - name: http
+              containerPort: 8000
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 6
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+

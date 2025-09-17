@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: litellm-pgvector-svc
+  namespace: {{ YOUR_NAMESPACE }}
+spec:
+  type: LoadBalancer
+  selector:
+    app: litellm-pgvector
+  ports:
+    - name: http
+      port: 8000
+      targetPort: http
+
