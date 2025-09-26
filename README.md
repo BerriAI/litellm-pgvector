@@ -17,7 +17,7 @@ A FastAPI application that provides OpenAI-compatible vector store endpoints usi
 ```bash
 curl -X POST \
   http://localhost:8000/v1/vector_stores \
-  -H "Authorization: Bearer your-api-key" \
+  -H "Authorization: Bearer sk-1234" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Support FAQ"
@@ -29,19 +29,24 @@ curl -X POST \
 # List all vector stores
 curl -X GET \
   http://localhost:8000/v1/vector_stores \
-  -H "Authorization: Bearer your-api-key"
+  -H "Authorization: Bearer sk-1234"
+
+# Through LiteLLM Proxy
+curl -X GET \
+  http://localhost:4000/v1/vector_stores \
+  -H "Authorization: Bearer sk-1234"
 
 # List with pagination (limit and after parameters)
 curl -X GET \
   "http://localhost:8000/v1/vector_stores?limit=10&after=vs_abc123" \
-  -H "Authorization: Bearer your-api-key"
+  -H "Authorization: Bearer sk-1234"
 ```
 
 ### 3. Add Single Embedding to Vector Store
 ```bash
 curl -X POST \
   http://localhost:8000/v1/vector_stores/vs_abc123/embeddings \
-  -H "Authorization: Bearer your-api-key" \
+  -H "Authorization: Bearer sk-1234" \
   -H "Content-Type: application/json" \
   -d '{
     "content": "Our return policy allows returns within 30 days of purchase.",
@@ -58,7 +63,7 @@ curl -X POST \
 ```bash
 curl -X POST \
   http://localhost:8000/v1/vector_stores/vs_abc123/embeddings/batch \
-  -H "Authorization: Bearer your-api-key" \
+  -H "Authorization: Bearer sk-1234" \
   -H "Content-Type: application/json" \
   -d '{
     "embeddings": [
@@ -80,7 +85,7 @@ curl -X POST \
 ```bash
 curl -X POST \
   http://localhost:8000/v1/vector_stores/vs_abc123/search \
-  -H "Authorization: Bearer your-api-key" \
+  -H "Authorization: Bearer sk-1234" \
   -H "Content-Type: application/json" \
   -d '{
     "query": "What is the return policy?",
@@ -99,14 +104,12 @@ Create a `.env` file with the following configuration:
 # Database Configuration
 DATABASE_URL="postgresql://username:password@localhost:5432/vectordb?schema=public"
 
-# API Configuration
-OPENAI_API_KEY="your-api-key-here"
-
-# Server Configuration
+# Server configuration for this pgvector connector
+SERVER_API_KEY="sk-1234"
 HOST="0.0.0.0"
 PORT=8000
 
-# LiteLLM Proxy Configuration
+# Embedding provider (LiteLLM Proxy Endpoint)
 EMBEDDING__MODEL="text-embedding-ada-002"
 EMBEDDING__BASE_URL="http://localhost:4000"
 EMBEDDING__API_KEY="sk-1234"
