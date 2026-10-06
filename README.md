@@ -109,7 +109,7 @@ PORT=8000
 # LiteLLM Proxy Configuration
 EMBEDDING__MODEL="text-embedding-ada-002"
 EMBEDDING__BASE_URL="http://localhost:4000"
-EMBEDDING__API_KEY="sk-1234"
+EMBEDDING__API_KEY="sk-<your-litellm-key>"
 EMBEDDING__DIMENSIONS=1536
 
 # Database Field Configuration (optional)
@@ -292,7 +292,7 @@ Any embedding model supported by LiteLLM proxy can be used. Examples:
 ```bash
 curl -X POST \
   http://localhost:8000/v1/vector_stores/vs_support_faq/search \
-  -H "Authorization: Bearer sk-1234" \
+  -H "Authorization: Bearer $SERVER_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "query": "How do I return an item?",

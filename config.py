@@ -17,7 +17,7 @@ class EmbeddingConfig(BaseModel):
     """Configuration for embedding generation via LiteLLM proxy"""
     model: str = "text-embedding-ada-002"
     base_url: str = "http://localhost:4000"  # LiteLLM proxy URL
-    api_key: str = "sk-1234"  # LiteLLM proxy API key
+    api_key: str
     dimensions: int = 1536
 
 
@@ -35,7 +35,7 @@ class Settings(BaseSettings):
     db_fields: DatabaseFieldConfig = DatabaseFieldConfig()
     
     # Embedding configuration
-    embedding: EmbeddingConfig = EmbeddingConfig()
+    embedding: EmbeddingConfig
     
     class Config:
         env_file = ".env"
