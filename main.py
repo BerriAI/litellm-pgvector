@@ -22,6 +22,7 @@ from models import (
     ContentChunk
 )
 from config import settings
+from timestamps import to_epoch_seconds
 from embedding_service import embedding_service
 
 load_dotenv()
@@ -108,8 +109,8 @@ async def create_vector_store(
         
         # Convert to response format
         created_at = int(vector_store["created_at_timestamp"])
-        expires_at = int(vector_store["expires_at"].timestamp()) if vector_store.get("expires_at") else None
-        last_active_at = int(vector_store["last_active_at"].timestamp()) if vector_store.get("last_active_at") else None
+        expires_at = to_epoch_seconds(vector_store.get("expires_at"))
+        last_active_at = to_epoch_seconds(vector_store.get("last_active_at"))
         
         return VectorStoreResponse(
             id=vector_store["id"],
@@ -183,8 +184,8 @@ async def list_vector_stores(
         vector_stores = []
         for row in results:
             created_at = int(row["created_at_timestamp"])
-            expires_at = int(row["expires_at"].timestamp()) if row.get("expires_at") else None
-            last_active_at = int(row["last_active_at"].timestamp()) if row.get("last_active_at") else None
+            expires_at = to_epoch_seconds(row.get("expires_at"))
+            last_active_at = to_epoch_seconds(row.get("last_active_at"))
             
             vector_store = VectorStoreResponse(
                 id=row["id"],
