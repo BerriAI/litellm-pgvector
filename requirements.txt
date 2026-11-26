@@ -6,5 +6,5 @@ pydantic>=2.5.0
 psycopg2-binary==2.9.7
 pgvector==0.2.4
 python-multipart==0.0.6
-litellm==1.74.3
+litellm==1.109.0.dev1
 pydantic-settings==2.1.0 
